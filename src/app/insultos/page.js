@@ -1,14 +1,20 @@
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [insult, setInsult] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const fetchInsult = () => {
-    fetch('https://insult.mattbas.org/api/insult')
-      .then(response => response.text())
-      .then(data => setInsult(data))
-      .catch(error => console.error('Error fetching insult:', error));
+  const fetchInsult = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('https://insult.mattbas.org/api/insult');
+      const data = await response.text();
+      setInsult(data);
+    } catch (error) {
+      console.error('Error fetching insult:', error);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -16,17 +22,44 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <div style={styles.container}>
       <h1>¡Insulto del día! 🗯️</h1>
-      <p style={{ fontSize: '24px', fontStyle: 'italic', color: '#555' }}>
-        {insult || 'Cargando insulto...'}
+      <p style={styles.insultText}>
+        {loading ? 'Cargando insulto...' : insult}
       </p>
-      <button 
-        onClick={fetchInsult} 
-        style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
-      >
-        Cambiar Insulto
-      </button>
+      <button
+  onClick={fetchInsult}
+  style={{ ...styles.button, ...(loading ? {} : styles.buttonHover) }}
+  disabled={loading}
+>
+  {loading ? '...' : '↻ Cambiar Insulto'}
+</button>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    textAlign: 'center',
+    marginTop: '50px',
+  },
+  insultText: {
+    fontSize: '24px',
+    fontStyle: 'italic',
+    color: '#555',
+    marginBottom: '20px',
+  },
+  button: {
+    backgroundColor: '#28a745',
+    color: '#fff',
+    border: 'none',
+    padding: '10px 20px',
+    borderRadius: '5px',
+    fontSize: '18px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s',
+  },
+  buttonHover: {
+    backgroundColor: '#218838',
+  },
+};

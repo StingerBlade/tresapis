@@ -22,8 +22,12 @@ export default function AdvicePage() {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>¡Consejo del Día! 💡</h1>
-      <button style={styles.button} onClick={fetchAdvice}>
-        {loading ? 'Cargando...' : 'Obtener Consejo'}
+      <button 
+        style={styles.button} 
+        onClick={fetchAdvice} 
+        disabled={loading}
+      >
+        {loading ? 'Cargando...' : '↻ Obtener Consejo'}
       </button>
       {advice && <p style={styles.advice}>"{advice}"</p>}
     </div>
@@ -39,10 +43,10 @@ const styles = {
     height: '100vh',
     backgroundColor: '#e0f7fa',
     fontFamily: 'Arial, sans-serif',
-    color: '#333', // Color del texto general
+    color: '#333',
   },
   title: {
-    fontSize: '36px', // Tamaño de fuente más grande para el título
+    fontSize: '36px',
     color: '#00796b',
     marginBottom: '20px',
   },
@@ -64,12 +68,12 @@ const styles = {
     marginTop: '20px',
     fontSize: '24px',
     fontStyle: 'italic',
-    color: '#333', // Color del texto del consejo
+    color: '#333',
     textAlign: 'center',
     maxWidth: '600px',
-    padding: '10px', // Espacio alrededor del texto
-    backgroundColor: '#ffffff', // Fondo blanco para destacar el texto
-    border: '1px solid #00796b', // Borde del cuadro
+    padding: '10px',
+    backgroundColor: '#ffffff',
+    border: '1px solid #00796b',
     borderRadius: '5px',
   },
 };
